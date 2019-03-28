@@ -1,3 +1,7 @@
+# Automatically loads required packages if the user doesn't have it already
+list.of.packages <- c("shiny", "raster", "rgdal", "sp", "leaflet", "geojsonio", "markdown")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
 
 library(shiny)
 library(raster)
@@ -113,7 +117,7 @@ server <- function(input, output, session) {
         options = layersControlOptions(collapsed = FALSE)
       ) %>%
       addLegend(pal = pal, values = ~FG_Numb, title = "Number of Field Guides",
-                position = "bottomright")
+                position = "bottomleft")
   })
 
 }
