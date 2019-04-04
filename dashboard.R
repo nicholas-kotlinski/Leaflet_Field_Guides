@@ -1,3 +1,4 @@
+#test
 list.of.packages <- c("shiny", "shinydashboard", "raster", "rgdal", "sp", "leaflet", "geojsonio", "markdown", "ggplot2")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
