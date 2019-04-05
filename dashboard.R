@@ -1,3 +1,4 @@
+
 list.of.packages <- c("shiny", "shinydashboard", "raster", "rgdal", "sp", "leaflet", "geojsonio", "markdown", "ggplot2")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
@@ -15,6 +16,7 @@ library(dplyr)
 
 fm <- geojsonio::geojson_read("data/fm_guides_r.geojson", what = "sp")
 fg.data <- read.csv("data/FG_cleaned_3_12_2019.csv")
+fg.clean<-read.csv("")
 
 ui <- dashboardPage(
   
@@ -23,12 +25,8 @@ ui <- dashboardPage(
   dashboardSidebar(title = "Controls",
                    selectInput(inputId = "variableselected", label = "Select country", 
                                choices = fm$admin),
-                   textOutput("selected_var")),
-                   #selectInput("cInput", "Select an Inventory", choices = unique(data$country)),
-                   #selectInput(inputId = "YInput", label = "Select Field Guides",
-                   #            choices = data$guide_no),
-                   
-                   #plotOutput("PieChart"),
+                   textOutput("selected_var"),
+                   plotOutput("PieChart")),
   
   dashboardBody(
     fluidPage(
@@ -87,7 +85,20 @@ server <- function(input, output, session) {
       addLegend(pal = pal, values = ~FG_Numb, title = "Number of Field Guides",
         position = "bottomleft")
   })
-  
+ 
+  output$PieChart<-renderPlot({
+    filedata() %>%subset( filedata()$Countries == input$country_input) %>%
+      select(Countries, Category) %>%
+      #mutate_at(var(Countries,Category), factor)%>%
+      group_by(Category) %>%
+      summarise(count=n()) %>%
+      mutate(Proportion = count/sum(count))%>%
+      ggplot(aes(x="", y=Proportion, fill=Category))+ geom_bar(width = 1, stat = "identity")+ coord_polar("y", start=0)+
+      scale_fill_manual(values = c("Plants" ="seagreen2", "Birds" = "mediumpurple3", "Fishes"="deepskyblue3", 
+                                   "Herp" = "cyan3", "Insects" = "goldenrod2","Mammals" = "darkorange2",
+                                   "Fungi"= "lightgoldenrod4", "Other" = "palevioletred2")) +
+      theme_bw() + theme(legend.text=element_text(size=rel(1.2))) +theme(legend.title=element_text(size=15))
+  }) 
 }
 
 shinyApp(ui = ui, server = server)
