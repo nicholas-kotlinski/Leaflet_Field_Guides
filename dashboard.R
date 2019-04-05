@@ -16,7 +16,7 @@ library(dplyr)
 
 fm <- geojsonio::geojson_read("data/fm_guides_r.geojson", what = "sp")
 fg.data <- read.csv("data/FG_cleaned_3_12_2019.csv")
-fg.clean<-red.csv("")
+fg.clean<-read.csv("")
 
 ui <- dashboardPage(
   
@@ -27,11 +27,6 @@ ui <- dashboardPage(
                                choices = fm$admin),
                    textOutput("selected_var"),
                    plotOutput("PieChart")),
-                   #selectInput("cInput", "Select an Inventory", choices = unique(data$country)),
-                   #selectInput(inputId = "YInput", label = "Select Field Guides",
-                   #            choices = data$guide_no),
-                   
-                   #plotOutput("PieChart"),
   
   dashboardBody(
     fluidPage(
