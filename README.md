@@ -1,4 +1,4 @@
-# Leaflet_Field_Guides
-A leaflet webmap dashboard for exploring field guides
+# Field Guides Leaflet App
+A leaflet webmap dashboard for exploring Field Museum field guides.
 
-https://nicholas-kotlinski.shinyapps.io/field_guides_leaflet/
+Check out the prototype [here](https://nicholas-kotlinski.shinyapps.io/field_guides_leaflet/)
